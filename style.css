@@ -1,14 +1,14 @@
 /* ======================================================================================================================================== /*
 /* Nom du fichier : style.css                                                                                                               /*
 /*                                                                                                                                          /*
-/* Description : Ce fichier contient les styles CSS pour le jeu Sokoban. Il définit les styles pour le corps du document.                   /*
+/* Description : Ce fichier contient les styles CSS pour le site Boxxle. Il définit les styles pour le corps du document.                   /*
 /*                                                                                                                                          /*
 /*========================================================================================================================================= /*
 
 /* ------ IMPORTS ------ */
 
-@import url('https:/*fonts.googleapis.com/css2?family=Sigmar&display=swap'); /* Importer la police de caractères Sigmar */
-@import url('https:/*fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap'); /* Importer la police de caractères Roboto Mono */
+@import url('https://fonts.googleapis.com/css2?family=Sigmar&display=swap'); /* Importer la police de caractères Sigmar */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap'); /* Importer la police de caractères Roboto Mono */
 
 /* ------ STYLES ------ */
 
@@ -24,121 +24,8 @@ body {
     font-family: 'Roboto Mono', sans-serif; /* Police de caractères */
 }
 
-/* Style pour le titre principal */
-h1 {
-    margin-bottom: 20px; /* Ajouter un espace en dessous du titre */
-    font-size: 32px; /* Taille de police */
-    font-family: 'Sigmar', sans-serif; /* Police de caractères */
-    color: #333; /* Couleur du texte */
-}
-
-/* Style pour le titre principal */
-main {
-    margin-bottom: 20px; /* Ajouter un espace en dessous du titre */
-    text-align: center; /* Centrer le texte */
-    color: #333; /* Couleur du texte */
-}
-
-footer {
-    background-color: rgba(255, 246, 169, 0.726); /* Couleur de fond */
-    position: fixed; /* Fixer le footer de page en bas de la page */
-    bottom: 0; /* Positionner le footer de page en bas */
-    width: 100%; /* Largeur du footer de page */
-    text-align: center; /* Centrer le texte */
-    padding: 10px; /* Ajouter un espace intérieur */
-}
-
-/* Style pour le conteneur de jeu */
-#game-container {
-    display: grid; /* Utiliser un affichage en grille */
-    grid-template-columns: repeat(10, 40px); /* 10 colonnes de 40px chacune */
-    grid-template-rows: repeat(11, 40px); /* 11 lignes de 40px chacune */
-    column-gap: 0px; /* Réduit l'écart entre les colonnes */
-    row-gap: 25px; /* Garde l'écart vertical si nécessaire */
-    padding: 10px; /* Ajouter un espace intérieur */
-    border-radius: 10px; /* Ajouter un rayon de bordure */
-}
-
-
-
-/* Style pour chaque cellule du jeu */
-.cell {
-    width: 40px; /* Largeur de la cellule */
-    height: 40px; /* Hauteur de la cellule */
-    display: flex; /* Utiliser un affichage flex */
-    align-items: center; /* Centrer verticalement */
-    justify-content: center; /* Centrer horizontalement */
-    font-size: 24px; /* Taille de police */
-    border-radius: 5px; /* Ajouter un rayon de bordure */
-}
-
-/* Style pour les cellules mur */
-.wall {
-    background: #444; /* Couleur de fond */
-}
-
-/* Style pour les cellules boîte */
-.box {
-    background: brown; /* Couleur de fond */
-}
-
-/* Style pour les cellules joueur */
-.player {
-    background: blue; /* Couleur de fond */
-}
-
-/* Style pour les cellules cible */
-.target {
-    background: yellow; /* Couleur de fond */
-}
-
-/* Surcharger le style pour les boîtes vertes */
-.box[style*="green"] {
-    background: green !important;  /* Couleur de fond seulement si la box est sur une target */
-}
-
-/* ------ MEDIA QUERIES ------ */
-
-/* Pour les écrans de moins de 600px de large */
-@media (max-width: 600px) {
-    h1 {
-        font-size: 24px; /* Réduire la taille de la police */
-    }
-
-    #game-container {
-        grid-template-columns: repeat(5, 30px); /* Réduire la taille des colonnes */
-        grid-template-rows: repeat(6, 30px); /* Réduire la taille des lignes */
-        gap: 15px; /* Réduire l'espace entre les cellules */
-    }
-
-    .cell {
-        width: 30px; /* Réduire la largeur des cellules */
-        height: 30px; /* Réduire la hauteur des cellules */
-        font-size: 18px; /* Réduire la taille de la police */
-    }
-}
-
-/* Pour les écrans de moins de 400px de large */
-@media (max-width: 400px) {
-    h1 {
-        font-size: 20px; /* Réduire encore la taille de la police */
-    }
-
-    #game-container {
-        grid-template-columns: repeat(5, 20px); /* Réduire encore la taille des colonnes */
-        grid-template-rows: repeat(6, 20px); /* Réduire encore la taille des lignes */
-        gap: 10px; /* Réduire encore l'espace entre les cellules */
-    }
-
-    .cell {
-        width: 20px; /* Réduire encore la largeur des cellules */
-        height: 20px; /* Réduire encore la hauteur des cellules */
-        font-size: 14px; /* Réduire encore la taille de la police */
-    }
-}
-
 /* Style général des boutons */
-button {
+header button {
     background-color: #4CAF50; /* Vert */
     border: none;
     color: white;
@@ -147,7 +34,7 @@ button {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 5px;
+    margin: 25px 5px 5px 5px; /* Ajouter une marge supérieure de 25px */
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
@@ -157,59 +44,88 @@ button:hover {
     background-color: #45a049;
 }
 
-/* Bouton spécifique pour reset */
-#reset-button {
-    background-color: #f44336; /* Rouge */
+/* Style pour le main */
+main {
+    padding: 20px;
+    text-align: center; /* Centrer le texte */
+    color: #333; /* Couleur du texte */
 }
 
-#reset-button:hover {
-    background-color: #d32f2f;
+/* Style pour les titres */
+h2 {
+    color: #333;
+    font-family: 'Sigmar', sans-serif; /* Police de caractères */
 }
 
-/* Bouton spécifique pour annuler un mouvement */
-#undo-button {
-    background-color: #ff9800; /* Orange */
+/* Style pour les paragraphes */
+p {
+    color: #666;
 }
 
-#undo-button:hover {
-    background-color: #e68900;
+/* Style pour les listes */
+ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-/* Bouton pour réinitialiser les contrôles */
-#reset-key-button {
-    background-color: #2196F3; /* Bleu */
+ul li {
+    background-color: #ddd;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
 }
 
-#reset-key-button:hover {
-    background-color: #1976D2;
-}
-
-/* Conteneur des contrôles */
-#control-container {
+/* Style pour les liens de navigation */
+nav a {
+    display: inline-block;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
     margin-top: 20px;
-    padding: 10px;
-    background: #f5f5f5;
-    border-radius: 5px;
-    display: inline-block;
+    transition: background-color 0.3s;
 }
 
-/* Style des boutons de personnalisation */
-#control-container button {
-    background-color: #607D8B;
+nav a:hover {
+    background-color: #555;
 }
 
-#control-container button:hover {
-    background-color: #455A64;
+/* Style pour le footer */
+footer {
+    background-color: rgba(255, 246, 169, 0.726); /* Couleur de fond */
+    position: fixed; /* Fixer le footer de page en bas de la page */
+    bottom: 0; /* Positionner le footer de page en bas */
+    width: 100%; /* Largeur du footer de page */
+    text-align: center; /* Centrer le texte */
+    padding: 10px; /* Ajouter un espace intérieur */
 }
 
-/* Affichage du score et du compteur de pas */
-#walking-counter-display,
-#score-display {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 10px;
-    padding: 10px;
-    background: #ddd;
-    border-radius: 5px;
-    display: inline-block;
+#note_score {
+    font-weight: bold; /* Mettre en gras */
+    text-decoration: underline; /* Souligner */
+}
+
+/* ------ MEDIA QUERIES ------ */
+
+/* Pour les écrans de moins de 600px de large */
+@media (max-width: 600px) {
+    h2 {
+        font-size: 24px; /* Réduire la taille de la police */
+    }
+
+    ul li {
+        padding: 8px; /* Réduire l'espace intérieur */
+    }
+}
+
+/* Pour les écrans de moins de 400px de large */
+@media (max-width: 400px) {
+    h2 {
+        font-size: 20px; /* Réduire encore la taille de la police */
+    }
+
+    ul li {
+        padding: 6px; /* Réduire encore l'espace intérieur */
+    }
 }

@@ -3,21 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'accueil - Boxxle</title>
     <link rel="stylesheet" href="./style.css">
-    <title>Boxxle.io</title>
-</head> 
+</head>
 <body>
     <header>
-        <h1>Boxxle.io</h1>
+        <a id="welcomePageButton" href="index.html"><button>Home Button</button></a>
     </header>
     <main>
-        <div id="game-container"></div>
+        <section>
+            <h2>Boxxle Game Rules</h2>
+            <p>Boxxle is a puzzle game where the player must move boxes to designated spots. The player can push the boxes but cannot pull them. The goal is to place all the boxes on the marked spots.</p>
+            <ul>
+                <li>Use the arrow keys to move the character.</li>
+                <li>The character can push one box at a time.</li>
+                <li>Boxes can only be pushed into empty spaces or targets.</li>
+            </ul>
+            <h2>Scoring</h2>
+            <ul>
+                <li>Each move or push increases the movement counter by 1.</li>
+                <li>Undoing the previous move increases the score by 2.</li>
+                <li>Resetting the game increases the score by 5 and adds the current movement counter to the score.</li>
+                <li>The movement counter resets upon winning a game and is added to your score.</li>
+            </ul>
+            <p id="note_score">Note: If you push a box that is stuck, the move counter will still increase.</p>
+
+            <nav>
+                <a href="game.html">Play</a>
+            </nav>
     </main>
     <footer>
         <p>© 2025 Boxxle.io</p>
         <p>Author : Nathaël VIGNE & Ilian BEN HAMOU</p>
     </footer>
-    <script type="module" src="./index.js"></script>
 </body>
 </html>
-
