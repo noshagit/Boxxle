@@ -1,0 +1,16 @@
+body {
+    background: rgb(176, 149, 30);
+}
+
+#gameboard{
+    width: auto;
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(10, 4vw);
+    grid-template-rows: repeat(10, 4vw);
+}
+
+#gameboard>div{
+    position: absolute;
+    height: 4vw;
+}
