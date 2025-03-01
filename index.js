@@ -20,6 +20,7 @@ const GRID_WIDTH = 50;
 const GRID_HEIGHT = 25;
 const fps = 10;
 const gameContainer = document.getElementById("game-container"); // Récupère l'id du conteneur de jeu
+let history = []; // Historique des mouvements
 
 const keys = { //définition des touches (flèches)
     37: "left",
@@ -78,6 +79,7 @@ const movePlayer = (dx, dy) => { // Déplace le joueur
     const newY = playerPos.y + dy; // Nouvelle position y
 
     if (canMove(newX, newY)) { // Vérifie si le joueur peut bouger
+        history.push(JSON.parse(JSON.stringify(level)));
         if (level[newY][newX] === 2) { // Si la case suivante est une boîte
             const boxX = newX + dx; // Nouvelle position x de la boîte
             const boxY = newY + dy; // Nouvelle position y de la boîte
@@ -110,6 +112,7 @@ const checkWin = () => { // Vérifie si le joueur a gagné
     if (win) { // Si le joueur a gagné
         alert("Congratulations! You completed the level."); // Alerte
         currentLevel = (currentLevel + 1) % Levels.length; // Passe au niveau suivant
+        history = [];
         level = JSON.parse(JSON.stringify(Levels[currentLevel])); // Deep copy pour éviter les modifications sur le niveau d'origine
         findPlayer(); // Trouve la position du joueur
         updateDOM(); // Met à jour le DOM
@@ -172,6 +175,22 @@ const highlightBoxesOnTarget = () => { // Met en évidence les boîtes sur les p
     });
 };
 
+// Fonction pour le reset du niveau
+const resetLevel = () => {
+    level = JSON.parse(JSON.stringify(Levels[currentLevel])); // recommence le level
+    findPlayer(); // Update la position du joeuru
+    updateDOM(); // reload la grid
+};
+
+// Fonction pour revenir en arrière sur le dernier movement
+const undoLastMove = () => {
+    if (history.length > 0) {
+        level = history.pop(); // Reviens au move d'avant
+        findPlayer(); // Update la position du joeuru
+        updateDOM(); // update l'état du jeu
+    }
+};
+
 const draw = () => { // Boucle de jeu
     updateDOM(); // Met à jour le DOM
     setTimeout(() => requestAnimationFrame(draw), 1000 / fps); // Met à jour le jeu
@@ -181,3 +200,23 @@ if (checkPlayerPresence()) { // Vérifie si le joueur est présent
     findPlayer(); // Trouve la position du joueur
     draw(); // Démarre la boucle
 }
+
+// ------ CREATIONS EXTRA BOUTON ------ //
+
+// Crée un bouton de reset
+window.addEventListener("DOMContentLoaded", () => {
+    const resetButton = document.createElement("button"); //crée l'élément bouton
+    resetButton.textContent = "Reset le niveau"; //texte dans le bouton
+    resetButton.id = "reset-button"; //Son id
+    document.body.appendChild(resetButton); //l'ajoute au body
+    resetButton.addEventListener("click", resetLevel); //lui ajoute un event listener, ici la fonction resetLevel
+});
+
+// Crée un bouton retour en arrière
+window.addEventListener("DOMContentLoaded", () => {
+    const undoButton = document.createElement("button");
+    undoButton.textContent = "Revenir en arrière";
+    undoButton.id = "undo-button";
+    document.body.appendChild(undoButton);
+    undoButton.addEventListener("click", undoLastMove);
+});
