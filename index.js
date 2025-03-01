@@ -166,10 +166,15 @@ const highlightBoxesOnTarget = () => { // Met en évidence les boîtes sur les p
 
 // Fonction pour le reset du niveau
 const resetLevel = () => {
-    history = [];
-    level = JSON.parse(JSON.stringify(Levels[currentLevel])); // recommence le level
-    findPlayer(); // Update la position du joeuru
-    updateDOM(); // reload la grid
+    if (checkPlayerPresence()) {
+        history = [];
+        level = JSON.parse(JSON.stringify(Levels[currentLevel])); // recommence le level
+        findPlayer(); // Update la position du joeuru
+        updateDOM(); // reload la grid
+    } else {
+        currentLevel = 0;
+        level = JSON.parse(JSON.stringify(Levels[currentLevel])); // recommence le level
+    }
 };
 
 //load spécifique level
