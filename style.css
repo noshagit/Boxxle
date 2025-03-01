@@ -95,3 +95,43 @@ footer {
 .box[style*="green"] {
     background: green !important;  /* Couleur de fond seulement si la box est sur une target */
 }
+
+/* ------ MEDIA QUERIES ------ */
+
+/* Pour les écrans de moins de 600px de large */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 24px; /* Réduire la taille de la police */
+    }
+
+    #game-container {
+        grid-template-columns: repeat(5, 30px); /* Réduire la taille des colonnes */
+        grid-template-rows: repeat(6, 30px); /* Réduire la taille des lignes */
+        gap: 15px; /* Réduire l'espace entre les cellules */
+    }
+
+    .cell {
+        width: 30px; /* Réduire la largeur des cellules */
+        height: 30px; /* Réduire la hauteur des cellules */
+        font-size: 18px; /* Réduire la taille de la police */
+    }
+}
+
+/* Pour les écrans de moins de 400px de large */
+@media (max-width: 400px) {
+    h1 {
+        font-size: 20px; /* Réduire encore la taille de la police */
+    }
+
+    #game-container {
+        grid-template-columns: repeat(5, 20px); /* Réduire encore la taille des colonnes */
+        grid-template-rows: repeat(6, 20px); /* Réduire encore la taille des lignes */
+        gap: 10px; /* Réduire encore l'espace entre les cellules */
+    }
+
+    .cell {
+        width: 20px; /* Réduire encore la largeur des cellules */
+        height: 20px; /* Réduire encore la hauteur des cellules */
+        font-size: 14px; /* Réduire encore la taille de la police */
+    }
+}
