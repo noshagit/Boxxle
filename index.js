@@ -157,6 +157,10 @@ window.addEventListener("keydown", (e) => { // Ecoute les touches du clavier
         movePlayer(-1, 0); // Déplace le joueur
     } else if (e.key === "ArrowRight") { // Si la touche est flèche de droite
         movePlayer(1, 0); // Déplace le joueur
+    } else if (e.key === "Backspace") { // Si la touche est retour
+        undoLastMove(); // Reviens en arrière
+    } else if (e.key === "Escape") { // Si la touche est r
+        resetLevel(); // Recommence le niveau
     }
 });
 
@@ -177,6 +181,7 @@ const highlightBoxesOnTarget = () => { // Met en évidence les boîtes sur les p
 
 // Fonction pour le reset du niveau
 const resetLevel = () => {
+    history = [];
     level = JSON.parse(JSON.stringify(Levels[currentLevel])); // recommence le level
     findPlayer(); // Update la position du joeuru
     updateDOM(); // reload la grid
