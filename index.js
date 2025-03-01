@@ -22,12 +22,13 @@ const fps = 10;
 const gameContainer = document.getElementById("game-container"); // Récupère l'id du conteneur de jeu
 let history = []; // Historique des mouvements
 
-const keys = { //définition des touches (flèches)
-    37: "left",
-    39: "right",
-    38: "up",
-    40: "down",
+let keys = { // Définit les touches par défaut (flèches)
+    up: "ArrowUp",
+    down: "ArrowDown",
+    left: "ArrowLeft",
+    right: "ArrowRight",
 };
+let isListeningForKey = false; // Empêche les mouvements lorsqu'on modifie une touche
 
 let currentLevel = 0; // Niveau de départ
 let level = JSON.parse(JSON.stringify(Levels[currentLevel])); // Deep copy pour éviter les modifications sur le niveau d'origine
@@ -148,22 +149,6 @@ const updateDOM = () => { // Met à jour le DOM
     highlightBoxesOnTarget(); // Met en évidence les boîtes sur les positions cibles
 };
 
-window.addEventListener("keydown", (e) => { // Ecoute les touches du clavier
-    if (e.key === "ArrowUp") { // Si la touche est flèche du haut
-        movePlayer(0, -1); // Déplace le joueur
-    } else if (e.key === "ArrowDown") { // Si la touche est flèche du bas
-        movePlayer(0, 1); // Déplace le joueur
-    } else if (e.key === "ArrowLeft") { // Si la touche est flèche de gauche
-        movePlayer(-1, 0); // Déplace le joueur
-    } else if (e.key === "ArrowRight") { // Si la touche est flèche de droite
-        movePlayer(1, 0); // Déplace le joueur
-    } else if (e.key === "Backspace") { // Si la touche est retour
-        undoLastMove(); // Reviens en arrière
-    } else if (e.key === "Escape") { // Si la touche est r
-        resetLevel(); // Recommence le niveau
-    }
-});
-
 const highlightBoxesOnTarget = () => { // Met en évidence les boîtes sur les positions cibles
     const boxes = document.querySelectorAll(".box"); // Récupère toutes les boîtes
 
@@ -213,12 +198,57 @@ if (checkPlayerPresence()) { // Vérifie si le joueur est présent
     draw(); // Démarre la boucle
 }
 
-// ------ CREATIONS EXTRA BOUTON ------ //
+// Fonction pour vérifier si la touche est déjà utilisée par un autre contrôle
+const isKeyUsed = (key, excludeControl) => { 
+    return Object.entries(keys).some(([control, assignedKey]) => assignedKey === key && control !== excludeControl);
+};
+
+// Fonction pour mettre à jour les contrôles personnalisés
+const updateCustomControls = (control, newKey) => {
+    if (isKeyUsed(newKey, control)) { // Vérifie si la touche est déjà utilisée
+        alert(`The key "${newKey}" is already assigned to another action.`); // Alerte l'utilisateur
+        return;// Ne modifie rien
+    } 
+
+    keys[control] = newKey; // Met à jour la touche du contrôle
+    document.getElementById(`${control}-key`).textContent = newKey; // Met à jour le texte du bouton
+};
+
+// Fonction pour écouter les touches du clavier
+const listenForKeyPress = (control) => {
+    isListeningForKey = true; // Empêche les mouvements lorsqu'on modifie une touche
+
+    const onKeyDown = (event) => { // Fonction pour écouter les touches du clavier
+        event.stopPropagation(); // Empêche la propagation de l'événement
+        event.preventDefault(); // Empêche le comportement par défaut
+
+        updateCustomControls(control, event.key); // Met à jour les contrôles personnalisés
+        isListeningForKey = false; // Autorise les mouvements de nouveau
+
+        document.removeEventListener("keydown", onKeyDown); // Arrête d'écouter les touches du clavier
+    };
+
+    document.addEventListener("keydown", onKeyDown); // Écoute les touches du clavier
+};
+
+const resetMovementControls = () => { // Réinitialise les contrôles de mouvement
+    keys = { // Définit les touches par défaut (flèches)
+        up: "ArrowUp",
+        down: "ArrowDown",
+        left: "ArrowLeft",
+        right: "ArrowRight",
+    };
+    document.getElementById("up-key").textContent = keys.up;
+    document.getElementById("down-key").textContent = keys.down;
+    document.getElementById("left-key").textContent = keys.left;
+    document.getElementById("right-key").textContent = keys.right;
+};
+
 
 // Crée un bouton de reset
 window.addEventListener("DOMContentLoaded", () => {
     const resetButton = document.createElement("button"); //crée l'élément bouton
-    resetButton.textContent = "Reset le niveau"; //texte dans le bouton
+    resetButton.textContent = "Réinitialiser le niveau"; //texte dans le bouton
     resetButton.id = "reset-button"; //Son id
     document.body.appendChild(resetButton); //l'ajoute au body
     resetButton.addEventListener("click", resetLevel); //lui ajoute un event listener, ici la fonction resetLevel
@@ -231,4 +261,50 @@ window.addEventListener("DOMContentLoaded", () => {
     undoButton.id = "undo-button";
     document.body.appendChild(undoButton);
     undoButton.addEventListener("click", undoLastMove);
+});
+
+const handlePlayerMovement = (event) => { // Fonction pour gérer le mouvement du joueur
+    if (isListeningForKey) return; // Ignore movement if changing controls
+
+    switch (event.key) { // Vérifie la touche pressée
+        case keys.up: movePlayer(0, -1); break; // Déplace le joueur vers le haut
+        case keys.down: movePlayer(0, 1); break; // Déplace le joueur vers le bas
+        case keys.left: movePlayer(-1, 0); break; // Déplace le joueur vers la gauche
+        case keys.right: movePlayer(1, 0); break; // Déplace le joueur vers la droite
+    }
+};
+
+window.addEventListener("keydown", (event) => { // Écoute les touches du clavier
+    handlePlayerMovement(event); // Gère le mouvement du joueur
+    if (event.key === "Backspace") undoLastMove(); // Reviens en arrière
+    if (event.key === "Escape") resetLevel(); // Reset le niveau
+});
+
+const createControlCustomizationForm = () => { // Crée un formulaire pour personnaliser les contrôles
+    const controlForm = document.createElement("div"); // Crée un élément div
+    controlForm.innerHTML = `
+        <label for="up-key">Touche Haut: </label><button id="up-key">${keys.up}</button><br>
+        <label for="down-key">Touche Bas: </label><button id="down-key">${keys.down}</button><br>
+        <label for="left-key">Touche Gauche: </label><button id="left-key">${keys.left}</button><br>
+        <label for="right-key">Touche Droite: </label><button id="right-key">${keys.right}</button><br>
+    `; // Ajoute des boutons pour personnaliser les contrôles
+    document.body.appendChild(controlForm); // Ajoute le formulaire au body
+
+    // Ajoute un event listener pour chaque bouton
+    document.getElementById("up-key").addEventListener("click", () => listenForKeyPress('up'));
+    document.getElementById("down-key").addEventListener("click", () => listenForKeyPress('down'));
+    document.getElementById("left-key").addEventListener("click", () => listenForKeyPress('left'));
+    document.getElementById("right-key").addEventListener("click", () => listenForKeyPress('right'));
+};
+
+// Crée le formulaire de personnalisation des contrôles
+window.addEventListener("DOMContentLoaded", createControlCustomizationForm);
+
+// Crée un bouton retour en arrière
+window.addEventListener("DOMContentLoaded", () => {
+    const keyButton = document.createElement("button");
+    keyButton.textContent = "Réinitialiser les contrôles";
+    keyButton.id = "reset-key-button";
+    document.body.appendChild(keyButton);
+    keyButton.addEventListener("click", resetMovementControls);
 });
