@@ -16,11 +16,10 @@ import { Levels } from "./level.js"; // Importe les niveaux
 
 // ------ VARIABLES ------ //
 
-const GRID_WIDTH = 50;
-const GRID_HEIGHT = 25;
-const fps = 10;
+const GRID_WIDTH = 50; // Définit la taille des cases
+const GRID_HEIGHT = 25; // Définit la taille des cases
+const fps = 10; // Définit les images par seconde
 const gameContainer = document.getElementById("game-container"); // Récupère l'id du conteneur de jeu
-let history = []; // Historique des mouvements
 
 let keys = { // Définit les touches par défaut (flèches)
     up: "ArrowUp",
@@ -28,14 +27,63 @@ let keys = { // Définit les touches par défaut (flèches)
     left: "ArrowLeft",
     right: "ArrowRight",
 };
+let history = []; // Historique des mouvements
 let isListeningForKey = false; // Empêche les mouvements lorsqu'on modifie une touche
-
 let currentLevel = 0; // Niveau de départ
 let level = JSON.parse(JSON.stringify(Levels[currentLevel])); // Deep copy pour éviter les modifications sur le niveau d'origine
 let playerPos = { x: 0, y: 0 }; // Position du joueur
+let walkingCounter = 0; // Compteur de pas
+let score = 0; // Score
 
 // ------ FONCTIONS ------ //
 
+// Met à jour l'affichage du compteur de pas
+const updateWalkingCounterDisplay = () => {
+    const walkingCounterDisplay = document.getElementById("walking-counter-display");
+    if (walkingCounterDisplay) {
+        walkingCounterDisplay.textContent = "Nombres de pas : " + walkingCounter;
+    }
+};
+
+// Met à jour l'affichage du compteur de pas
+const updateScoreDisplay = () => {
+    const scoreDisplay = document.getElementById("score-display");
+    if (scoreDisplay) {
+        scoreDisplay.textContent = "Votre score : " + score;
+    }
+};
+
+// Incrémente le compteur de pas
+const increaseWalkingCounter = () => {
+    walkingCounter++; // Incrémente le compteur de pas
+    updateWalkingCounterDisplay(); // Met à jour l'affichage du compteur de pas
+}
+
+// Réinitialise le compteur de pas
+const resetWalkingCounter = () => {
+    walkingCounter = 0; // Réinitialise le compteur de pas
+    updateWalkingCounterDisplay(); // Met à jour l'affichage du compteur de pas
+}
+
+// Incrémente le score
+const modifyScore = () => {
+    score += walkingCounter;
+    updateScoreDisplay();
+}
+
+// Décrémente le score
+const increaseScore2 = () => {
+    score += 2;
+    updateScoreDisplay();
+}
+
+// Décrémente le score
+const increaseScore5 = () => {
+    score += 5;
+    updateScoreDisplay();
+}
+
+// Trouve la position du joueur et modifie sa position
 const findPlayer = () => { // Trouve la position du joueur et modifie sa position
     for (let y = 0; y < level.length; y++) { // Parcours la grille
         for (let x = 0; x < level[y].length; x++) { 
@@ -80,7 +128,9 @@ const movePlayer = (dx, dy) => { // Déplace le joueur
     const newY = playerPos.y + dy; // Nouvelle position y
 
     if (canMove(newX, newY)) { // Vérifie si le joueur peut bouger
-        history.push(JSON.parse(JSON.stringify(level)));
+        history.push(JSON.parse(JSON.stringify(level))); // Ajoute l'état actuel de la grille à l'historique
+        increaseWalkingCounter(); // Incrémente le compteur de pas
+        console.log(walkingCounter);
         if (level[newY][newX] === 2) { // Si la case suivante est une boîte
             const boxX = newX + dx; // Nouvelle position x de la boîte
             const boxY = newY + dy; // Nouvelle position y de la boîte
@@ -117,6 +167,8 @@ const checkWin = () => { // Vérifie si le joueur a gagné
         level = JSON.parse(JSON.stringify(Levels[currentLevel])); // Deep copy pour éviter les modifications sur le niveau d'origine
         findPlayer(); // Trouve la position du joueur
         updateDOM(); // Met à jour le DOM
+        modifyScore(); // Incrémente le compteur de pas
+        resetWalkingCounter(); // Réinitialise le compteur de pas
     }
 };
 
@@ -166,6 +218,8 @@ const highlightBoxesOnTarget = () => { // Met en évidence les boîtes sur les p
 
 // Fonction pour le reset du niveau
 const resetLevel = () => {
+    increaseScore5(); // Incrémente le score
+    updateScoreDisplay(); // Met à jour le score
     if (checkPlayerPresence()) {
         history = [];
         level = JSON.parse(JSON.stringify(Levels[currentLevel])); // recommence le level
@@ -175,6 +229,8 @@ const resetLevel = () => {
         currentLevel = 0;
         level = JSON.parse(JSON.stringify(Levels[currentLevel])); // recommence le level
     }
+    modifyScore(); // Incrémente le score
+    resetWalkingCounter(); // Réinitialise le compteur de pas
 };
 
 //load spécifique level
@@ -190,6 +246,7 @@ const undoLastMove = () => {
         level = history.pop(); // Reviens au move d'avant
         findPlayer(); // Update la position du joeuru
         updateDOM(); // update l'état du jeu
+        increaseScore2(); // Incrémente le score
     }
 };
 
@@ -249,25 +306,6 @@ const resetMovementControls = () => { // Réinitialise les contrôles de mouveme
     document.getElementById("right-key").textContent = keys.right;
 };
 
-
-// Crée un bouton de reset
-window.addEventListener("DOMContentLoaded", () => {
-    const resetButton = document.createElement("button"); //crée l'élément bouton
-    resetButton.textContent = "Réinitialiser le niveau"; //texte dans le bouton
-    resetButton.id = "reset-button"; //Son id
-    document.body.appendChild(resetButton); //l'ajoute au body
-    resetButton.addEventListener("click", resetLevel); //lui ajoute un event listener, ici la fonction resetLevel
-});
-
-// Crée un bouton retour en arrière
-window.addEventListener("DOMContentLoaded", () => {
-    const undoButton = document.createElement("button");
-    undoButton.textContent = "Revenir en arrière";
-    undoButton.id = "undo-button";
-    document.body.appendChild(undoButton);
-    undoButton.addEventListener("click", undoLastMove);
-});
-
 const handlePlayerMovement = (event) => { // Fonction pour gérer le mouvement du joueur
     if (isListeningForKey) return; // Ignore movement if changing controls
 
@@ -283,6 +321,24 @@ window.addEventListener("keydown", (event) => { // Écoute les touches du clavie
     handlePlayerMovement(event); // Gère le mouvement du joueur
     if (event.key === "Backspace") undoLastMove(); // Reviens en arrière
     if (event.key === "Escape") resetLevel(); // Reset le niveau
+});
+
+// Crée un bouton de reset
+window.addEventListener("DOMContentLoaded", () => {
+    const resetButton = document.createElement("button"); //crée l'élément bouton
+    resetButton.textContent = "Réinitialiser le niveau"; //texte dans le bouton
+    resetButton.id = "reset-button"; //Son id
+    document.body.appendChild(resetButton); //l'ajoute au body
+    resetButton.addEventListener("click", resetLevel); //lui ajoute un event listener, ici la fonction resetLevel
+});
+
+// Crée un bouton retour en arrière
+window.addEventListener("DOMContentLoaded", () => {
+    const undoButton = document.createElement("button"); // Crée l'élément bouton
+    undoButton.textContent = "Revenir en arrière"; // Texte dans le bouton
+    undoButton.id = "undo-button"; // Son id
+    document.body.appendChild(undoButton); // Ajoute le bouton au body
+    undoButton.addEventListener("click", undoLastMove); // Lui ajoute un event listener, ici la fonction undoLastMove
 });
 
 const createControlCustomizationForm = () => { // Crée un formulaire pour personnaliser les contrôles
@@ -305,7 +361,7 @@ const createControlCustomizationForm = () => { // Crée un formulaire pour perso
 // Crée le formulaire de personnalisation des contrôles
 window.addEventListener("DOMContentLoaded", createControlCustomizationForm);
 
-// Crée un bouton retour en arrière
+// Crée un bouton pour réinitialiser les contrôles
 window.addEventListener("DOMContentLoaded", () => {
     const keyButton = document.createElement("button");
     keyButton.textContent = "Réinitialiser les contrôles";
@@ -313,3 +369,20 @@ window.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(keyButton);
     keyButton.addEventListener("click", resetMovementControls);
 });
+
+// Affiche le compteur de pas
+window.addEventListener("DOMContentLoaded", () => {
+    const walkingCounterDisplay = document.createElement("div");
+    walkingCounterDisplay.id = "walking-counter-display";
+    walkingCounterDisplay.textContent = "Nombres de pas : " + walkingCounter;
+    document.body.appendChild(walkingCounterDisplay);
+});
+
+// Affiche le score
+window.addEventListener("DOMContentLoaded", () => {
+    const scoreDisplay = document.createElement("div");
+    scoreDisplay.id = "score-display";
+    scoreDisplay.textContent = "Votre score : " + score;
+    document.body.appendChild(scoreDisplay);
+});
+
