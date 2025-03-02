@@ -114,7 +114,7 @@ loadAudioFiles();
 
 // Bouton Next (passer à la chanson suivante)
 const nextButton = document.createElement("button");
-nextButton.innerHTML = "Suivant ▶⏭️";
+nextButton.innerHTML = "Suivant ⏭️";
 nextButton.onclick = function() {
     currentFileIndex = (currentFileIndex + 1) % audioFiles.length;
     audio.src = audioFiles[currentFileIndex];
