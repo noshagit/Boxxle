@@ -34,7 +34,7 @@ let level = JSON.parse(JSON.stringify(Levels[currentLevel])); // Deep copy pour 
 let playerPos = { x: 0, y: 0 }; // Position du joueur
 let walkingCounter = 0; // Compteur de pas
 let score = 0; // Score
-let playerSpriteIndex = 1; // Index de l'image du joueur
+let playerSpriteIndex = 1; // Index de l'image actuelle du joueur
 
 // ------ AUDIO ------ //
 
@@ -199,14 +199,17 @@ function resetSound() {
 // ------ FONCTIONS ------ //
 
 const updatePlayerSprite = () => {
-    playerSpriteIndex = playerSpriteIndex < 3 ? playerSpriteIndex + 1 : 2;
-    document.documentElement.style.setProperty('--player-image', `url('/images/player${playerSpriteIndex}.png')`);
+    playerSpriteIndex = (playerSpriteIndex % 3) + 1; // Cycle entre 1, 2 et 3
+    const playerCells = document.querySelectorAll(".player"); // Sélectionne toutes les cellules du joueur
+    playerCells.forEach(cell => { // Met à jour l'image de chaque cellule du joueur
+        cell.style.backgroundImage = `url('/images/player${playerSpriteIndex}.png')`;
+    });
 };
 
-const resetPlayerSprite = () => {
+const resetPlayerSprite = () => { // Réinitialise l'image du joueur
     playerSpriteIndex = 1;
-    document.documentElement.style.setProperty('--player-image', `url('/images/player${playerSpriteIndex}.png')`);
-}
+    updatePlayerSprite();
+};
 
 // Met à jour l'affichage du compteur de pas
 const updateWalkingCounterDisplay = () => {
@@ -442,6 +445,7 @@ const undoLastMove = () => {
 
 const draw = () => { // Boucle de jeu
     updateDOM(); // Met à jour le DOM
+    updatePlayerSprite();
     setTimeout(() => requestAnimationFrame(draw), 1000 / fps); // Met à jour le jeu
 };
 
