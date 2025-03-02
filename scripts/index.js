@@ -81,11 +81,11 @@ volumeSlider.value = "0.15"; // Valeur initiale
 volumeSlider.oninput = function(event) {
     audio.volume = event.target.value;
 };
+container.appendChild(volumeSlider);
 
 // Ajouter les éléments au conteneur
 container.appendChild(playPauseButton);
 container.appendChild(stopButton);
-container.appendChild(volumeSlider);
 
 // Variables de contrôle de la playlist
 let audioFiles = [];
@@ -503,14 +503,14 @@ window.addEventListener("DOMContentLoaded", () => {
     const resetButton = document.createElement("button");
     resetButton.textContent = "Réinitialiser le niveau";
     resetButton.id = "reset-button";
-    controlsContainer.appendChild(resetButton);
+    document.body.appendChild(resetButton);
     resetButton.addEventListener("click", resetLevel);
 
     // Crée un bouton retour en arrière
     const undoButton = document.createElement("button");
     undoButton.textContent = "Revenir en arrière";
     undoButton.id = "undo-button";
-    controlsContainer.appendChild(undoButton);
+    document.body.appendChild(undoButton);
     undoButton.addEventListener("click", undoLastMove);
 
     // Crée un formulaire pour personnaliser les contrôles
@@ -523,18 +523,39 @@ window.addEventListener("DOMContentLoaded", () => {
     `;
     controlsContainer.appendChild(controlForm);
 
-    // Ajoute un event listener pour chaque bouton
-    document.getElementById("up-key").addEventListener("click", () => listenForKeyPress('up'));
-    document.getElementById("down-key").addEventListener("click", () => listenForKeyPress('down'));
-    document.getElementById("left-key").addEventListener("click", () => listenForKeyPress('left'));
-    document.getElementById("right-key").addEventListener("click", () => listenForKeyPress('right'));
-
     // Crée un bouton pour réinitialiser les contrôles
     const keyButton = document.createElement("button");
     keyButton.textContent = "Réinitialiser les contrôles";
     keyButton.id = "reset-key-button";
     controlsContainer.appendChild(keyButton);
     keyButton.addEventListener("click", resetMovementControls);
+
+    // Crée un menu burger
+    const burgerMenu = document.createElement("div");
+    burgerMenu.id = "burger-menu";
+    burgerMenu.innerHTML = `
+        <div id="burger-icon">&#9776; Options</div>
+        <div id="burger-content" style="display: none;">
+            ${controlsContainer.innerHTML}
+        </div>
+    `;
+    document.body.appendChild(burgerMenu);
+
+    // Ajoute un event listener pour le menu burger
+    document.getElementById("burger-icon").addEventListener("click", () => {
+        const burgerContent = document.getElementById("burger-content");
+        burgerContent.style.display = burgerContent.style.display === "none" ? "block" : "none";
+    });
+
+    // Déplace les éléments du conteneur de contrôles dans le contenu du menu burger
+    controlsContainer.innerHTML = '';
+
+    // Ajoute un event listener pour chaque bouton
+    document.getElementById("up-key").addEventListener("click", () => listenForKeyPress('up'));
+    document.getElementById("down-key").addEventListener("click", () => listenForKeyPress('down'));
+    document.getElementById("left-key").addEventListener("click", () => listenForKeyPress('left'));
+    document.getElementById("right-key").addEventListener("click", () => listenForKeyPress('right'));
+    document.getElementById("reset-key-button").addEventListener("click", resetMovementControls);
 });
 
 // Affiche le compteur de pas et le score
