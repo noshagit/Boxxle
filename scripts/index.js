@@ -40,6 +40,7 @@ let score = 0; // Score
 // Créer l'élément audio
 const audio = document.createElement("audio");
 audio.id = "audio";
+audio.volume = 0.15; // Volume initial
 audio.style.display = "none"; // On masque la balise audio
 document.body.appendChild(audio); // Ajouter l'élément audio au body
 
@@ -76,7 +77,7 @@ volumeSlider.type = "range";
 volumeSlider.min = "0";
 volumeSlider.max = "1";
 volumeSlider.step = "0.01";
-volumeSlider.value = "0.5"; // Valeur initiale
+volumeSlider.value = "0.15"; // Valeur initiale
 volumeSlider.oninput = function(event) {
     audio.volume = event.target.value;
 };
