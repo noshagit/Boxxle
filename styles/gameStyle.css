@@ -254,3 +254,33 @@ button:hover {
     flex-direction: column;
     align-items: center;
 }
+
+/* Style pour les contrôles de volume */
+#music-volume,
+#effects-volume {
+    margin: 20px;
+    appearance: none; /* Supprimer le style par défaut */
+    -webkit-appearance: none; /* Supprimer le style par défaut */
+    width: 90%; /* Largeur à 100% */
+    height: 8px; /* Hauteur de la barre */
+    background: #ddd; /* Couleur de fond */
+    outline: none; /* Supprimer le contour */
+    border-radius: 5px; /* Ajouter un rayon de bordure */
+    transition: background 0.3s; /* Transition pour la couleur de fond */
+}
+
+#music-volume::-webkit-slider-thumb,
+#effects-volume::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Supprimer le style par défaut */
+    width: 20px; /* Largeur du curseur */
+    height: 20px; /* Hauteur du curseur */
+    background: #4CAF50; /* Couleur du curseur */
+    border-radius: 50%; /* Curseur rond */
+    cursor: pointer; /* Curseur de pointeur */
+    transition: background 0.3s; /* Transition pour la couleur de fond */
+}
+
+#music-volume::-webkit-slider-thumb:hover,
+#effects-volume::-webkit-slider-thumb:hover {
+    background: #45a049; /* Changer la couleur du curseur au survol */
+}

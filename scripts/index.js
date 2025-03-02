@@ -71,18 +71,6 @@ stopButton.onclick = function() {
     audio.currentTime = 0; // Remettre la lecture à zéro
 };
 
-// Slider de volume
-const volumeSlider = document.createElement("input");
-volumeSlider.type = "range";
-volumeSlider.min = "0";
-volumeSlider.max = "1";
-volumeSlider.step = "0.01";
-volumeSlider.value = "0.15"; // Valeur initiale
-volumeSlider.oninput = function(event) {
-    audio.volume = event.target.value;
-};
-container.appendChild(volumeSlider);
-
 // Ajouter les éléments au conteneur
 container.appendChild(playPauseButton);
 container.appendChild(stopButton);
@@ -179,22 +167,22 @@ window.changeState = function(action) {
 const walk = new Audio('/sounds/walk.mp3');
 const resetgamesound = new Audio('/sounds/resetLevel.mp3');
 const box = new Audio('/sounds/box.mp3');
+walk.volume = 0.2; // Volume initial
+resetgamesound.volume = 0.2; // Volume initial
+box.volume = 0.2; // Volume initial
 
 // Fonction pour jouer le son avec un volume de 20%
 function walkingSound() {
-    walk.volume = 0.3;  // Définir le volume à 20%
     walk.play();        // Jouer le son
 }
 
 // Fonction pour jouer le son avec un volume de 20%
 function boxSound() {
-    box.volume = 0.45;  // Définir le volume à 20%
     box.play();        // Jouer le son
 }
 
 // Fonction pour jouer le son avec un volume de 20%
 function resetSound() {
-    resetgamesound.volume = 0.15;  // Définir le volume à 20%
     resetgamesound.play();        // Jouer le son
 }
 
@@ -556,6 +544,48 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("left-key").addEventListener("click", () => listenForKeyPress('left'));
     document.getElementById("right-key").addEventListener("click", () => listenForKeyPress('right'));
     document.getElementById("reset-key-button").addEventListener("click", resetMovementControls);
+
+    // Ajoute les sliders de volume pour la musique et les effets sonores
+    const musicVolumeSlider = document.createElement("input");
+    musicVolumeSlider.type = "range";
+    musicVolumeSlider.min = "0";
+    musicVolumeSlider.max = "1";
+    musicVolumeSlider.step = "0.01";
+    musicVolumeSlider.value = audio.volume;
+    musicVolumeSlider.oninput = function(event) {
+        audio.volume = event.target.value;
+    };
+    musicVolumeSlider.onmouseup = function() {
+        musicVolumeSlider.blur();
+    };
+
+    const effectsVolumeSlider = document.createElement("input");
+    effectsVolumeSlider.type = "range";
+    effectsVolumeSlider.min = "0";
+    effectsVolumeSlider.max = "1";
+    effectsVolumeSlider.step = "0.02";
+    effectsVolumeSlider.oninput = function(event) {
+        walk.volume = event.target.value;
+        resetgamesound.volume = event.target.value;
+        box.volume = event.target.value;
+    };
+    effectsVolumeSlider.onmouseup = function() {
+        effectsVolumeSlider.blur();
+    };
+
+    const volumeControls = document.createElement("div");
+    volumeControls.innerHTML = `
+        <label for="music-volume">Volume Musique: </label>
+        <input id="music-volume" type="range" min="0" max="1" step="0.01" value="${audio.volume}"><br>
+        <label for="effects-volume">Volume Effets Sonores: </label>
+        <input id="effects-volume" type="range" min="0" max="1" step="0.01" value="${walk.volume}">
+    `;
+    volumeControls.querySelector("#music-volume").addEventListener("input", musicVolumeSlider.oninput);
+    volumeControls.querySelector("#music-volume").addEventListener("mouseup", musicVolumeSlider.onmouseup);
+    volumeControls.querySelector("#effects-volume").addEventListener("input", effectsVolumeSlider.oninput);
+    volumeControls.querySelector("#effects-volume").addEventListener("mouseup", effectsVolumeSlider.onmouseup);
+
+    document.getElementById("burger-content").appendChild(volumeControls);
 });
 
 // Affiche le compteur de pas et le score
