@@ -35,6 +35,168 @@ let playerPos = { x: 0, y: 0 }; // Position du joueur
 let walkingCounter = 0; // Compteur de pas
 let score = 0; // Score
 
+// ------ AUDIO ------ //
+
+// Créer l'élément audio
+const audio = document.createElement("audio");
+audio.id = "audio";
+audio.style.display = "none"; // On masque la balise audio
+document.body.appendChild(audio); // Ajouter l'élément audio au body
+
+// Créer le conteneur pour les boutons et le slider de volume
+const container = document.getElementById("audio-container");
+
+// Bouton Play/Pause
+const playPauseButton = document.createElement("button");
+playPauseButton.innerHTML = "▶️";
+playPauseButton.onclick = function() {
+    if (audio.paused) {
+        audio.play();
+        playPauseButton.innerHTML = "⏸️";
+    } else {
+        audio.pause();
+        playPauseButton.innerHTML = "▶️";
+    }
+};
+
+// Ajouter le bouton Play/Pause au conteneur
+container.appendChild(playPauseButton);
+
+// Bouton Stop
+const stopButton = document.createElement("button");
+stopButton.innerHTML = "⏹️";
+stopButton.onclick = function() {
+    audio.pause();
+    audio.currentTime = 0; // Remettre la lecture à zéro
+};
+
+// Slider de volume
+const volumeSlider = document.createElement("input");
+volumeSlider.type = "range";
+volumeSlider.min = "0";
+volumeSlider.max = "1";
+volumeSlider.step = "0.01";
+volumeSlider.value = "0.5"; // Valeur initiale
+volumeSlider.oninput = function(event) {
+    audio.volume = event.target.value;
+};
+
+// Ajouter les éléments au conteneur
+container.appendChild(playPauseButton);
+container.appendChild(stopButton);
+container.appendChild(volumeSlider);
+
+// Variables de contrôle de la playlist
+let audioFiles = [];
+let currentFileIndex = 0;
+
+// Charger les fichiers audio depuis un fichier .txt
+async function loadAudioFiles() {
+    try {
+        const response = await fetch('/musics/songsList.txt'); // Charger le fichier texte
+        const text = await response.text(); // Récupérer le contenu du fichier
+        audioFiles = text.split('\n').map(file => file.trim()).filter(file => file !== '');
+
+        if (audioFiles.length > 0) {
+            // Utiliser le premier fichier de la liste (par exemple)
+            audio.src = audioFiles[currentFileIndex];
+        } else {
+            console.error("Aucun fichier audio trouvé dans le fichier texte.");
+        }
+
+        // Mettre à jour le fichier audio quand la chanson actuelle est terminée
+        audio.addEventListener('ended', function() {
+            currentFileIndex = (currentFileIndex + 1) % audioFiles.length;
+            if (currentFileIndex === 0) {
+                console.log("Fin de la playlist, on recommence !");
+            }
+            audio.src = audioFiles[currentFileIndex];
+            audio.play();
+        });
+
+    } catch (error) {
+        console.error("Erreur lors du chargement du fichier audio : ", error);
+    }
+}
+
+// Charger la liste des fichiers audio au démarrage
+loadAudioFiles();
+
+// Bouton Next (passer à la chanson suivante)
+const nextButton = document.createElement("button");
+nextButton.innerHTML = "Suivant ▶⏭️";
+nextButton.onclick = function() {
+    currentFileIndex = (currentFileIndex + 1) % audioFiles.length;
+    audio.src = audioFiles[currentFileIndex];
+    audio.play();
+};
+
+// Bouton Previous (revenir à la chanson précédente)
+const prevButton = document.createElement("button");
+prevButton.innerHTML = "Précédent ⏮️";
+prevButton.onclick = function() {
+    currentFileIndex = (currentFileIndex - 1 + audioFiles.length) % audioFiles.length;
+    audio.src = audioFiles[currentFileIndex];
+    audio.play();
+};
+
+// Ajouter les boutons Next et Previous au conteneur
+container.appendChild(prevButton);
+container.appendChild(nextButton);
+
+// Afficher le temps écoulé et la durée totale
+const timeDisplay = document.createElement("div");
+timeDisplay.id = "time-display";
+container.appendChild(timeDisplay);
+
+audio.addEventListener('timeupdate', () => {
+    const currentTime = formatTime(audio.currentTime);
+    const duration = formatTime(audio.duration);
+    timeDisplay.textContent = `${currentTime} / ${duration}`;
+});
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+// Attacher la fonction changeState à window pour pouvoir l'utiliser
+window.changeState = function(action) {
+    if (action === "play") {
+        audio.play();
+    } else if (action === "pause") {
+        audio.pause();
+    } else if (action === "stop") {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+};
+
+// ------ SOUND EFFECTS ------ //
+
+const walk = new Audio('/sounds/walk.mp3');
+const resetgamesound = new Audio('/sounds/resetLevel.mp3');
+const box = new Audio('/sounds/box.mp3');
+
+// Fonction pour jouer le son avec un volume de 20%
+function walkingSound() {
+    walk.volume = 0.4;  // Définir le volume à 20%
+    walk.play();        // Jouer le son
+}
+
+// Fonction pour jouer le son avec un volume de 20%
+function boxSound() {
+    box.volume = 0.3;  // Définir le volume à 20%
+    box.play();        // Jouer le son
+}
+
+// Fonction pour jouer le son avec un volume de 20%
+function resetSound() {
+    resetgamesound.volume = 0.15;  // Définir le volume à 20%
+    resetgamesound.play();        // Jouer le son
+}
+
 // ------ FONCTIONS ------ //
 
 // Met à jour l'affichage du compteur de pas
@@ -130,6 +292,7 @@ const movePlayer = (dx, dy) => { // Déplace le joueur
     if (canMove(newX, newY)) { // Vérifie si le joueur peut bouger
         history.push(JSON.parse(JSON.stringify(level))); // Ajoute l'état actuel de la grille à l'historique
         increaseWalkingCounter(); // Incrémente le compteur de pas
+        walkingSound(); // Joue le son de pas
         console.log(walkingCounter);
         if (level[newY][newX] === 2) { // Si la case suivante est une boîte
             const boxX = newX + dx; // Nouvelle position x de la boîte
@@ -139,6 +302,7 @@ const movePlayer = (dx, dy) => { // Déplace le joueur
                 level[newY][newX] = 3; // Déplace le joueur
                 level[playerPos.y][playerPos.x] = Levels[currentLevel][playerPos.y][playerPos.x] === 4 ? 4 : 0; // Met à jour la position du joueur
                 playerPos = { x: newX, y: newY }; // Met à jour la position du joueur
+                boxSound(); // Joue le son de boîte
             }
         } else { // Si la case suivante n'est pas une boîte
             level[newY][newX] = 3; // Déplace le joueur
@@ -220,6 +384,7 @@ const highlightBoxesOnTarget = () => { // Met en évidence les boîtes sur les p
 // Fonction pour le reset du niveau
 const resetLevel = () => {
     increaseScore5(); // Incrémente le score
+    resetSound(); // Joue le son de reset
     updateScoreDisplay(); // Met à jour le score
     if (checkPlayerPresence()) {
         history = [];
@@ -318,72 +483,72 @@ const handlePlayerMovement = (event) => { // Fonction pour gérer le mouvement d
     }
 };
 
+// ------ EVENT LISTENERS ------ //
+
 window.addEventListener("keydown", (event) => { // Écoute les touches du clavier
     handlePlayerMovement(event); // Gère le mouvement du joueur
     if (event.key === "Backspace") undoLastMove(); // Reviens en arrière
     if (event.key === "Escape") resetLevel(); // Reset le niveau
 });
 
-// Crée un bouton de reset
+// Crée une div pour contenir tous les boutons et le formulaire
 window.addEventListener("DOMContentLoaded", () => {
-    const resetButton = document.createElement("button"); //crée l'élément bouton
-    resetButton.textContent = "Réinitialiser le niveau"; //texte dans le bouton
-    resetButton.id = "reset-button"; //Son id
-    document.body.appendChild(resetButton); //l'ajoute au body
-    resetButton.addEventListener("click", resetLevel); //lui ajoute un event listener, ici la fonction resetLevel
-});
+    const controlsContainer = document.createElement("div");
+    controlsContainer.id = "controls-container";
+    document.body.appendChild(controlsContainer);
 
-// Crée un bouton retour en arrière
-window.addEventListener("DOMContentLoaded", () => {
-    const undoButton = document.createElement("button"); // Crée l'élément bouton
-    undoButton.textContent = "Revenir en arrière"; // Texte dans le bouton
-    undoButton.id = "undo-button"; // Son id
-    document.body.appendChild(undoButton); // Ajoute le bouton au body
-    undoButton.addEventListener("click", undoLastMove); // Lui ajoute un event listener, ici la fonction undoLastMove
-});
+    // Crée un bouton de reset
+    const resetButton = document.createElement("button");
+    resetButton.textContent = "Réinitialiser le niveau";
+    resetButton.id = "reset-button";
+    controlsContainer.appendChild(resetButton);
+    resetButton.addEventListener("click", resetLevel);
 
-const createControlCustomizationForm = () => { // Crée un formulaire pour personnaliser les contrôles
-    const controlForm = document.createElement("div"); // Crée un élément div
+    // Crée un bouton retour en arrière
+    const undoButton = document.createElement("button");
+    undoButton.textContent = "Revenir en arrière";
+    undoButton.id = "undo-button";
+    controlsContainer.appendChild(undoButton);
+    undoButton.addEventListener("click", undoLastMove);
+
+    // Crée un formulaire pour personnaliser les contrôles
+    const controlForm = document.createElement("div");
     controlForm.innerHTML = `
         <label for="up-key">Touche Haut: </label><button id="up-key">${keys.up}</button><br>
         <label for="down-key">Touche Bas: </label><button id="down-key">${keys.down}</button><br>
         <label for="left-key">Touche Gauche: </label><button id="left-key">${keys.left}</button><br>
         <label for="right-key">Touche Droite: </label><button id="right-key">${keys.right}</button><br>
-    `; // Ajoute des boutons pour personnaliser les contrôles
-    document.body.appendChild(controlForm); // Ajoute le formulaire au body
+    `;
+    controlsContainer.appendChild(controlForm);
 
     // Ajoute un event listener pour chaque bouton
     document.getElementById("up-key").addEventListener("click", () => listenForKeyPress('up'));
     document.getElementById("down-key").addEventListener("click", () => listenForKeyPress('down'));
     document.getElementById("left-key").addEventListener("click", () => listenForKeyPress('left'));
     document.getElementById("right-key").addEventListener("click", () => listenForKeyPress('right'));
-};
 
-// Crée le formulaire de personnalisation des contrôles
-window.addEventListener("DOMContentLoaded", createControlCustomizationForm);
-
-// Crée un bouton pour réinitialiser les contrôles
-window.addEventListener("DOMContentLoaded", () => {
+    // Crée un bouton pour réinitialiser les contrôles
     const keyButton = document.createElement("button");
     keyButton.textContent = "Réinitialiser les contrôles";
     keyButton.id = "reset-key-button";
-    document.body.appendChild(keyButton);
+    controlsContainer.appendChild(keyButton);
     keyButton.addEventListener("click", resetMovementControls);
 });
 
-// Affiche le compteur de pas
+// Affiche le compteur de pas et le score
 window.addEventListener("DOMContentLoaded", () => {
+    const displayContainer = document.createElement("div");
+    displayContainer.id = "display-container";
+
     const walkingCounterDisplay = document.createElement("div");
     walkingCounterDisplay.id = "walking-counter-display";
     walkingCounterDisplay.textContent = "Nombres de pas : " + walkingCounter;
-    document.body.appendChild(walkingCounterDisplay);
-});
 
-// Affiche le score
-window.addEventListener("DOMContentLoaded", () => {
     const scoreDisplay = document.createElement("div");
     scoreDisplay.id = "score-display";
     scoreDisplay.textContent = "Votre score : " + score;
-    document.body.appendChild(scoreDisplay);
-});
 
+    displayContainer.appendChild(walkingCounterDisplay);
+    displayContainer.appendChild(scoreDisplay);
+    document.body.appendChild(displayContainer);
+});

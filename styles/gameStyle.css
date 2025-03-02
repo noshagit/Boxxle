@@ -32,7 +32,10 @@ h1 {
     margin-bottom: 20px; /* Ajouter un espace en dessous du titre */
     font-size: 32px; /* Taille de police */
     font-family: 'Sigmar', sans-serif; /* Police de caractères */
-    color: #333; /* Couleur du texte */
+    color: black;
+    background-color: #ddd;
+    padding: 5px;
+    border-radius: 3px;
 }
 
 /* Style pour le titre principal */
@@ -54,14 +57,19 @@ footer {
 
 /* Style pour le conteneur de jeu */
 #game-container {
+    background-image: url('/images/ground.png'); /* Image initiale */
+    background-size: cover;
     display: grid; /* Utiliser un affichage en grille */
+    justify-items: center; /* Centrer les éléments horizontalement */
+    align-items: center; /* Centrer les éléments verticalement */
     grid-template-columns: repeat(10, 40px); /* 10 colonnes de 40px chacune */
     grid-template-rows: repeat(11, 40px); /* 11 lignes de 40px chacune */
     column-gap: 0px; /* Réduit l'écart entre les colonnes */
     row-gap: 25px; /* Garde l'écart vertical si nécessaire */
-    padding: 10px; /* Ajouter un espace intérieur */
+    padding: 25px; /* Ajouter un espace intérieur */
     border-radius: 10px; /* Ajouter un rayon de bordure */
     margin: 25px; /* Ajouter un espace extérieur */
+    margin-bottom: 5px;
 }
 
 label {
@@ -104,46 +112,6 @@ label {
 .target {
     background-image: url('/images/target.png');
     background-size: cover;
-}
-
-/* ------ MEDIA QUERIES ------ */
-
-/* Pour les écrans de moins de 600px de large */
-@media (max-width: 600px) {
-    h1 {
-        font-size: 24px; /* Réduire la taille de la police */
-    }
-
-    #game-container {
-        grid-template-columns: repeat(5, 30px); /* Réduire la taille des colonnes */
-        grid-template-rows: repeat(6, 30px); /* Réduire la taille des lignes */
-        gap: 15px; /* Réduire l'espace entre les cellules */
-    }
-
-    .cell {
-        width: 30px; /* Réduire la largeur des cellules */
-        height: 30px; /* Réduire la hauteur des cellules */
-        font-size: 18px; /* Réduire la taille de la police */
-    }
-}
-
-/* Pour les écrans de moins de 400px de large */
-@media (max-width: 400px) {
-    h1 {
-        font-size: 20px; /* Réduire encore la taille de la police */
-    }
-
-    #game-container {
-        grid-template-columns: repeat(5, 20px); /* Réduire encore la taille des colonnes */
-        grid-template-rows: repeat(6, 20px); /* Réduire encore la taille des lignes */
-        gap: 10px; /* Réduire encore l'espace entre les cellules */
-    }
-
-    .cell {
-        width: 20px; /* Réduire encore la largeur des cellules */
-        height: 20px; /* Réduire encore la hauteur des cellules */
-        font-size: 14px; /* Réduire encore la taille de la police */
-    }
 }
 
 /* Style général des boutons */
@@ -239,4 +207,16 @@ button:hover {
 
 #welcomePageButton:hover {
     color: #555; /* Changer la couleur du texte au survol */
+}
+
+/* Style pour l'affichage du temps */
+#time-display {
+    font-size: 18px; /* Taille de la police */
+    font-weight: bold; /* Texte en gras */
+    margin: 10px; /* Ajouter un espace extérieur */
+    padding: 10px; /* Ajouter un espace intérieur */
+    background: #ddd; /* Couleur de fond */
+    border-radius: 5px; /* Ajouter un rayon de bordure */
+    display: inline-block; /* Affichage en ligne */
+    color: #333; /* Couleur du texte */
 }

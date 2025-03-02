@@ -1,0 +1,16 @@
+/musics/goodLuckBabe.mp3
+/musics/Nggyu.mp3
+/musics/allMyFellas.mp3
+/musics/bababouey.mp3
+/musics/chugJug.mp3
+/musics/eggstrem.mp3
+/musics/goodLuckBabe.mp3
+/musics/hey.mp3
+/musics/hiddenInTheSand.mp3
+/musics/itsCorn.mp3
+/musics/nootNoot.mp3
+/musics/solitudeIThink.mp3
+/musics/takeOnMe.mp3
+/musics/theCat.mp3
+/musics/toyota.mp3
+/musics/zinzin.mp3
