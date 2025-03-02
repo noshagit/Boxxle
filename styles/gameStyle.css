@@ -14,8 +14,7 @@
 
 /* Style pour le corps du document */
 body {
-    background-image: url('/images/background.jpg'); /* Image de fond */
-    opacity: 0.8; /* Baisser l'opacité à 80% */
+    background-image: url('/images/background.png'); /* Image de fond */
     background-color: rgba(0, 0, 0, 0.5); /* Ajouter une couleur de fond semi-transparente */
     background-size: cover; /* Adapter l'image à la taille de la fenêtre */
     display: flex; /* Utiliser un affichage flex */
@@ -25,6 +24,7 @@ body {
     height: 100%; /* Hauteur de la page */
     margin: 0; /* Supprimer les marges par défaut */
     font-family: 'Roboto Mono', sans-serif; /* Police de caractères */
+    font-weight: bold; /* Texte en gras */
 }
 
 /* Style pour le titre principal */
@@ -33,9 +33,9 @@ h1 {
     font-size: 32px; /* Taille de police */
     font-family: 'Sigmar', sans-serif; /* Police de caractères */
     color: black;
-    background-color: #ddd;
     padding: 5px;
     border-radius: 3px;
+    font-family: 'Sigmar', sans-serif; /* Police de caractères */
 }
 
 /* Style pour le titre principal */
@@ -93,7 +93,7 @@ label {
 
 /* Style pour les cellules mur */
 .wall {
-    background-image: url('/images/wall.jpg');
+    background-image: url('/images/wall.png');
     background-size: cover;
 }
 
@@ -118,7 +118,7 @@ label {
 button {
     background-color: #4CAF50; /* Vert */
     border: none;
-    color: white;
+    color: black;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
@@ -128,6 +128,7 @@ button {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
+    font-weight: bold; /* Texte en gras */
 }
 
 button:hover {
@@ -137,6 +138,7 @@ button:hover {
 /* Bouton spécifique pour reset */
 #reset-button {
     background-color: #f44336; /* Rouge */
+    font-weight: bold; /* Texte en gras */
 }
 
 #reset-button:hover {
@@ -146,6 +148,7 @@ button:hover {
 /* Bouton spécifique pour annuler un mouvement */
 #undo-button {
     background-color: #ff9800; /* Orange */
+    font-weight: bold; /* Texte en gras */
 }
 
 #undo-button:hover {
@@ -155,6 +158,7 @@ button:hover {
 /* Bouton pour réinitialiser les contrôles */
 #reset-key-button {
     background-color: #2196F3; /* Bleu */
+    font-weight: bold; /* Texte en gras */
 }
 
 #reset-key-button:hover {
@@ -267,6 +271,7 @@ button:hover {
     outline: none; /* Supprimer le contour */
     border-radius: 5px; /* Ajouter un rayon de bordure */
     transition: background 0.3s; /* Transition pour la couleur de fond */
+    border: 2px solid black; /* Ajouter une bordure noire */
 }
 
 #music-volume::-webkit-slider-thumb,

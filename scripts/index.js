@@ -382,7 +382,7 @@ const highlightBoxesOnTarget = () => { // Met en évidence les boîtes sur les p
         if (Levels[currentLevel][y][x] === 4) { // If the box is on a target
             box.style.backgroundImage = "url('/images/boxValidate.png')"; // Change to validated box image
         } else { // If the box is not on a target
-            box.style.backgroundImage = "url('/images/box.jpg')"; // Keep the normal box image
+            box.style.backgroundImage = "url('/images/box.png')"; // Keep the normal box image
         }
         
     });

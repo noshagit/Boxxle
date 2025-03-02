@@ -14,7 +14,8 @@
 
 /* Style pour le corps du document */
 body {
-    background: rgba(165, 214, 206, 0.705); /* Couleur de fond */
+    background-image: url('/images/background.png'); /* Image de fond */
+    background-size: cover; /* Adapter l'image à la taille de la fenêtre */
     display: flex; /* Utiliser un affichage flex */
     flex-direction: column; /* Aligner les éléments verticalement */
     justify-content: center; /* Centrer les éléments horizontalement */
@@ -22,6 +23,7 @@ body {
     height: 100%; /* Hauteur de la page */
     margin: 0; /* Supprimer les marges par défaut */
     font-family: 'Roboto Mono', sans-serif; /* Police de caractères */
+    font-weight: bold; /* Texte en gras */
 }
 
 /* Style général des boutons */
