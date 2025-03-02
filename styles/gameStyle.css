@@ -10,6 +10,12 @@
 @import url('https:/*fonts.googleapis.com/css2?family=Sigmar&display=swap'); /* Importer la police de caractères Sigmar */
 @import url('https:/*fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap'); /* Importer la police de caractères Roboto Mono */
 
+/* ------ VARIABLES ------ */
+
+:root {
+    --player-image: url('/images/player1.png');
+}
+
 /* ------ STYLES ------ */
 
 /* Style pour le corps du document */
@@ -104,7 +110,7 @@ label {
 
 /* Style pour les cellules joueur */
 .player {
-    background-image: url('/images/player1.png'); /* Image initiale */
+    background-image: var(--player-image);
     background-size: cover;
 }
 

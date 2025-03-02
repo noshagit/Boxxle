@@ -34,6 +34,7 @@ let level = JSON.parse(JSON.stringify(Levels[currentLevel])); // Deep copy pour 
 let playerPos = { x: 0, y: 0 }; // Position du joueur
 let walkingCounter = 0; // Compteur de pas
 let score = 0; // Score
+let playerSpriteIndex = 1; // Index de l'image du joueur
 
 // ------ AUDIO ------ //
 
@@ -197,6 +198,16 @@ function resetSound() {
 
 // ------ FONCTIONS ------ //
 
+const updatePlayerSprite = () => {
+    playerSpriteIndex = playerSpriteIndex < 3 ? playerSpriteIndex + 1 : 2;
+    document.documentElement.style.setProperty('--player-image', `url('/images/player${playerSpriteIndex}.png')`);
+};
+
+const resetPlayerSprite = () => {
+    playerSpriteIndex = 1;
+    document.documentElement.style.setProperty('--player-image', `url('/images/player${playerSpriteIndex}.png')`);
+}
+
 // Met à jour l'affichage du compteur de pas
 const updateWalkingCounterDisplay = () => {
     const walkingCounterDisplay = document.getElementById("walking-counter-display");
@@ -302,8 +313,9 @@ const movePlayer = (dx, dy) => { // Déplace le joueur
 
             increaseWalkingCounter(); // Incrémente le compteur de pas
             boxSound(); // Joue le son de boîte
+            updatePlayerSprite(); // Change l'image du joueur
         }
-        return; // Sort de la fonction si une boîte était présente (évite d'incrémenter un pas inutilement)
+        return;
     }
 
     // Vérifie si le joueur peut bouger normalement (sans boîte)
@@ -315,11 +327,13 @@ const movePlayer = (dx, dy) => { // Déplace le joueur
 
         increaseWalkingCounter(); // Incrémente le compteur de pas
         walkingSound(); // Joue le son de pas
+        updatePlayerSprite(); // Change l'image du joueur
     }
 
     updateDOM(); // Met à jour le DOM
     checkWin(); // Vérifie si le joueur a gagné
 };
+
 
 
 const checkWin = () => { // Vérifie si le joueur a gagné
@@ -340,6 +354,7 @@ const checkWin = () => { // Vérifie si le joueur a gagné
         updateDOM(); // Met à jour le DOM
         modifyScore(); // Incrémente le compteur de pas
         resetWalkingCounter(); // Réinitialise le compteur de pas
+        resetPlayerSprite(); // Réinitialise l'image du joueur
     }
 };
 
