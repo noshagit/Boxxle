@@ -284,34 +284,43 @@ const canPushBox = (x, y, dx, dy) => { // Vérifie si le joueur peut pousser une
 };
 
 const movePlayer = (dx, dy) => { // Déplace le joueur
-    const newX = playerPos.x + dx; // Nouvelle position x
-    const newY = playerPos.y + dy; // Nouvelle position y
+    const newX = playerPos.x + dx;
+    const newY = playerPos.y + dy;
 
-    if (canMove(newX, newY)) { // Vérifie si le joueur peut bouger
-        history.push(JSON.parse(JSON.stringify(level))); // Ajoute l'état actuel de la grille à l'historique
+    // Vérifie si la case suivante est une boîte
+    if (level[newY][newX] === 2) {
+        const boxX = newX + dx;
+        const boxY = newY + dy;
+
+        // Vérifie si la boîte peut être poussée
+        if (canPushBox(newX, newY, dx, dy)) {
+            history.push(JSON.parse(JSON.stringify(level))); // Sauvegarde l'état de la grille
+            level[boxY][boxX] = 2; // Déplace la boîte
+            level[newY][newX] = 3; // Déplace le joueur
+            level[playerPos.y][playerPos.x] = Levels[currentLevel][playerPos.y][playerPos.x] === 4 ? 4 : 0; // Met à jour la case précédente du joueur
+            playerPos = { x: newX, y: newY }; // Met à jour la position du joueur
+
+            increaseWalkingCounter(); // Incrémente le compteur de pas
+            boxSound(); // Joue le son de boîte
+        }
+        return; // Sort de la fonction si une boîte était présente (évite d'incrémenter un pas inutilement)
+    }
+
+    // Vérifie si le joueur peut bouger normalement (sans boîte)
+    if (canMove(newX, newY)) {
+        history.push(JSON.parse(JSON.stringify(level))); // Sauvegarde l'état de la grille
+        level[newY][newX] = 3; // Déplace le joueur
+        level[playerPos.y][playerPos.x] = Levels[currentLevel][playerPos.y][playerPos.x] === 4 ? 4 : 0; // Met à jour la case précédente du joueur
+        playerPos = { x: newX, y: newY }; // Met à jour la position du joueur
+
         increaseWalkingCounter(); // Incrémente le compteur de pas
         walkingSound(); // Joue le son de pas
-        console.log(walkingCounter);
-        if (level[newY][newX] === 2) { // Si la case suivante est une boîte
-            const boxX = newX + dx; // Nouvelle position x de la boîte
-            const boxY = newY + dy; // Nouvelle position y de la boîte
-            if (canPushBox(newX, newY, dx, dy)) { // Vérifie si le joueur peut pousser la boîte
-                level[boxY][boxX] = 2; // Déplace la boîte
-                level[newY][newX] = 3; // Déplace le joueur
-                level[playerPos.y][playerPos.x] = Levels[currentLevel][playerPos.y][playerPos.x] === 4 ? 4 : 0; // Met à jour la position du joueur
-                playerPos = { x: newX, y: newY }; // Met à jour la position du joueur
-                boxSound(); // Joue le son de boîte
-            }
-        } else { // Si la case suivante n'est pas une boîte
-            level[newY][newX] = 3; // Déplace le joueur
-            level[playerPos.y][playerPos.x] = Levels[currentLevel][playerPos.y][playerPos.x] === 4 ? 4 : 0; // Met à jour la position du joueur
-            playerPos = { x: newX, y: newY }; // Met à jour la position du joueur
-        }
     }
 
     updateDOM(); // Met à jour le DOM
     checkWin(); // Vérifie si le joueur a gagné
 };
+
 
 const checkWin = () => { // Vérifie si le joueur a gagné
     let win = true; // Par défaut, le joueur a gagné
@@ -427,17 +436,25 @@ if (checkPlayerPresence()) { // Vérifie si le joueur est présent
 
 // Fonction pour vérifier si la touche est déjà utilisée par un autre contrôle
 const isKeyUsed = (key, excludeControl) => { 
+    if (key.length === 1) { // Si la touche est une seule lettre
+        key = key.toLowerCase(); // Convertis uniquement les touches d'une seule lettre (lettres) en minuscules
+    }
+    // Vérifie si la touche est déjà utilisée par un autre contrôle
     return Object.entries(keys).some(([control, assignedKey]) => assignedKey === key && control !== excludeControl);
 };
 
 // Fonction pour mettre à jour les contrôles personnalisés
 const updateCustomControls = (control, newKey) => {
-    if (isKeyUsed(newKey, control)) { // Vérifie si la touche est déjà utilisée
-        alert(`The key "${newKey}" is already assigned to another action.`); // Alerte l'utilisateur
-        return;// Ne modifie rien
+    if (newKey.length === 1) { // Si la touche est une seule lettre
+        newKey = newKey.toLowerCase(); // Convert only single-character keys (letters) to lowercase
+    }
+
+    if (isKeyUsed(newKey, control)) { // Vérifie si la touche est déjà utilisée par un autre contrôle
+        alert(`The key "${newKey}" is already assigned to another action.`); // Alerte
+        return; // Arrête la fonction
     } 
 
-    keys[control] = newKey; // Met à jour la touche du contrôle
+    keys[control] = newKey; // Met à jour les contrôles personnalisés
     document.getElementById(`${control}-key`).textContent = newKey; // Met à jour le texte du bouton
 };
 
@@ -471,10 +488,15 @@ const resetMovementControls = () => { // Réinitialise les contrôles de mouveme
     document.getElementById("right-key").textContent = keys.right;
 };
 
-const handlePlayerMovement = (event) => { // Fonction pour gérer le mouvement du joueur
-    if (isListeningForKey) return; // Ignore movement if changing controls
+const handlePlayerMovement = (event) => {
+    if (isListeningForKey) return; // Empêche les mouvements lorsqu'on modifie une touche
 
-    switch (event.key) { // Vérifie la touche pressée
+    let keyPressed = event.key; // Récupère la touche pressée
+    if (keyPressed.length === 1) { // Si la touche est une seule lettre
+        keyPressed = keyPressed.toLowerCase(); // Convertis uniquement les touches d'une seule lettre (lettres) en minuscules
+    }
+
+    switch (keyPressed) { // Gère le mouvement du joueur
         case keys.up: movePlayer(0, -1); break; // Déplace le joueur vers le haut
         case keys.down: movePlayer(0, 1); break; // Déplace le joueur vers le bas
         case keys.left: movePlayer(-1, 0); break; // Déplace le joueur vers la gauche
