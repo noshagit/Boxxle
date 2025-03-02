@@ -14,7 +14,10 @@
 
 /* Style pour le corps du document */
 body {
-    background: rgba(165, 214, 206, 0.705); /* Couleur de fond */
+    background-image: url('/images/background.jpg'); /* Image de fond */
+    opacity: 0.8; /* Baisser l'opacité à 80% */
+    background-color: rgba(0, 0, 0, 0.5); /* Ajouter une couleur de fond semi-transparente */
+    background-size: cover; /* Adapter l'image à la taille de la fenêtre */
     display: flex; /* Utiliser un affichage flex */
     flex-direction: column; /* Aligner les éléments verticalement */
     justify-content: center; /* Centrer les éléments horizontalement */
@@ -34,6 +37,7 @@ h1 {
 
 /* Style pour le titre principal */
 main {
+    background: rgba(rgba(255, 211, 115, 0.692), green, blue, alpha);
     margin-bottom: 20px; /* Ajouter un espace en dessous du titre */
     text-align: center; /* Centrer le texte */
     color: #333; /* Couleur du texte */
@@ -60,6 +64,12 @@ footer {
     margin: 25px; /* Ajouter un espace extérieur */
 }
 
+label {
+    color: black;
+    background-color: #ddd;
+    padding: 5px;
+    border-radius: 3px;
+}
 
 
 /* Style pour chaque cellule du jeu */
