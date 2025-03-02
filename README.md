@@ -8,6 +8,19 @@ Boxxle is a challenging puzzle game where players must push boxes to designated 
 2. Push the boxes to the marked spots.
 3. Complete the level by placing all boxes on the designated locations.
 
+## Features
+
+- Multiple levels with increasing difficulty.
+- Undo and reset button to help you solve puzzles.
+- Simple and intuitive controls.
+- Binding controls
+- Stunning pixel art to enhance the visual appeal of the game some are animated
+- Beautiful background
+- Music playlist
+- Sounds effect
+- Option menu
+- Scoring and walk counter
+
 ## Score Feature
 
 - Each move or push increases the movement counter by 1.
@@ -20,14 +33,6 @@ Boxxle is a challenging puzzle game where players must push boxes to designated 
 ## Objectives
 
 The objective is to achieve the lowest score possible by placing the boxes on the target locations with the fewest movements and lowest score.
-
-## Features
-
-- Multiple levels with increasing difficulty.
-- Undo and reset options to help you solve puzzles.
-- Simple and intuitive controls.
-- Binding controls
-- Stunning pixel art to enhance the visual appeal of the game
 
 ## Installation
 

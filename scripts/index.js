@@ -245,15 +245,22 @@ const modifyScore = () => {
     updateScoreDisplay();
 }
 
-// Décrémente le score
+// Augemente le score de 2
 const increaseScore2 = () => {
     score += 2;
+    increaseWalkingCounter();
     updateScoreDisplay();
 }
 
-// Décrémente le score
+// Augmente le score de 5
 const increaseScore5 = () => {
     score += 5;
+    updateScoreDisplay();
+}
+
+// Augmente le score de 500
+const increaseScore500 = () => {
+    score += 500;
     updateScoreDisplay();
 }
 
@@ -530,6 +537,22 @@ window.addEventListener("DOMContentLoaded", () => {
     const controlsContainer = document.createElement("div");
     controlsContainer.id = "controls-container";
     document.body.appendChild(controlsContainer);
+
+    // Crée un bouton pour passer le niveau
+    const skipLevelButton = document.createElement("button");
+    skipLevelButton.textContent = "Passer le niveau";
+    skipLevelButton.id = "skip-level-button";
+    document.body.appendChild(skipLevelButton);
+    skipLevelButton.addEventListener("click", () => {
+        currentLevel = (currentLevel + 1) % Levels.length; // Passe au niveau suivant
+        history = [];
+        level = JSON.parse(JSON.stringify(Levels[currentLevel])); // Deep copy pour éviter les modifications sur le niveau d'origine
+        findPlayer(); // Trouve la position du joueur
+        updateDOM(); // Met à jour le DOM
+        resetWalkingCounter(); // Réinitialise le compteur de pas
+        resetPlayerSprite(); // Réinitialise l'image du joueur
+        increaseScore500(); // Incrémente le score
+    });
 
     // Crée un bouton de reset
     const resetButton = document.createElement("button");
