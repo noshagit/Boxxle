@@ -35,7 +35,7 @@ body {
 
 /* Style pour le titre principal */
 h1 {
-    margin-bottom: 20px; /* Ajouter un espace en dessous du titre */
+    margin-bottom: 0; /* Ajouter un espace en dessous du titre */
     font-size: 32px; /* Taille de police */
     font-family: 'Sigmar', sans-serif; /* Police de caractères */
     color: black;
