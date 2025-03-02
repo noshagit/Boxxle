@@ -69,6 +69,7 @@ stopButton.innerHTML = "⏹️";
 stopButton.onclick = function() {
     audio.pause();
     audio.currentTime = 0; // Remettre la lecture à zéro
+    playPauseButton.innerHTML = "▶️"; // Change le bouton Play/Pause à ▶️
 };
 
 // Ajouter les éléments au conteneur
@@ -118,6 +119,10 @@ nextButton.onclick = function() {
     currentFileIndex = (currentFileIndex + 1) % audioFiles.length;
     audio.src = audioFiles[currentFileIndex];
     audio.play();
+    playPauseButton.innerHTML = "⏸️";
+    if (audio.paused) {
+        playPauseButton.innerHTML = "▶️";
+    }
 };
 
 // Bouton Previous (revenir à la chanson précédente)
@@ -127,6 +132,10 @@ prevButton.onclick = function() {
     currentFileIndex = (currentFileIndex - 1 + audioFiles.length) % audioFiles.length;
     audio.src = audioFiles[currentFileIndex];
     audio.play();
+    playPauseButton.innerHTML = "⏸️";
+    if (audio.paused) {
+        playPauseButton.innerHTML = "▶️";
+    }
 };
 
 // Ajouter les boutons Next et Previous au conteneur
