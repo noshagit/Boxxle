@@ -425,13 +425,6 @@ const resetLevel = () => {
     resetWalkingCounter(); // Réinitialise le compteur de pas
 };
 
-//load spécifique level
-const loadLevel = (nb) => {
-    level = JSON.parse(JSON.stringify(Levels[nb])); // recommence le level
-    findPlayer(); // Update la position du joeuru
-    updateDOM(); // reload la grid
-};
-
 // Fonction pour revenir en arrière sur le dernier movement
 const undoLastMove = () => {
     if (history.length > 0) {

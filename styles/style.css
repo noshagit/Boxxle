@@ -24,6 +24,19 @@ body {
     margin: 0; /* Supprimer les marges par défaut */
     font-family: 'Roboto Mono', sans-serif; /* Police de caractères */
     font-weight: bold; /* Texte en gras */
+    position: fixed; /* Position fixe pour ne pas empiéter sur le footer */
+    width: 100%; /* Largeur de la page */
+    overflow: auto; /* Permettre le défilement si nécessaire */
+}
+
+/* Style pour le footer */
+footer {
+    background-color: rgba(255, 246, 169, 0.726); /* Couleur de fond */
+    position: fixed; /* Fixer le footer de page en bas de la page */
+    bottom: 0; /* Positionner le footer de page en bas */
+    width: 100%; /* Largeur du footer de page */
+    text-align: center; /* Centrer le texte */
+    padding: 10px; /* Ajouter un espace intérieur */
 }
 
 /* Style général des boutons */
@@ -93,41 +106,7 @@ nav a:hover {
     background-color: #555;
 }
 
-/* Style pour le footer */
-footer {
-    background-color: rgba(255, 246, 169, 0.726); /* Couleur de fond */
-    position: fixed; /* Fixer le footer de page en bas de la page */
-    bottom: 0; /* Positionner le footer de page en bas */
-    width: 100%; /* Largeur du footer de page */
-    text-align: center; /* Centrer le texte */
-    padding: 10px; /* Ajouter un espace intérieur */
-}
-
 #note_score {
     font-weight: bold; /* Mettre en gras */
     text-decoration: underline; /* Souligner */
-}
-
-/* ------ MEDIA QUERIES ------ */
-
-/* Pour les écrans de moins de 600px de large */
-@media (max-width: 600px) {
-    h2 {
-        font-size: 24px; /* Réduire la taille de la police */
-    }
-
-    ul li {
-        padding: 8px; /* Réduire l'espace intérieur */
-    }
-}
-
-/* Pour les écrans de moins de 400px de large */
-@media (max-width: 400px) {
-    h2 {
-        font-size: 20px; /* Réduire encore la taille de la police */
-    }
-
-    ul li {
-        padding: 6px; /* Réduire encore l'espace intérieur */
-    }
 }
