@@ -313,6 +313,7 @@ const movePlayer = (dx, dy) => { // Déplace le joueur
 
             increaseWalkingCounter(); // Incrémente le compteur de pas
             boxSound(); // Joue le son de boîte
+            checkWin();
             updatePlayerSprite(); // Change l'image du joueur
         }
         return;
