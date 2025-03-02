@@ -182,13 +182,13 @@ const box = new Audio('/sounds/box.mp3');
 
 // Fonction pour jouer le son avec un volume de 20%
 function walkingSound() {
-    walk.volume = 0.4;  // Définir le volume à 20%
+    walk.volume = 0.3;  // Définir le volume à 20%
     walk.play();        // Jouer le son
 }
 
 // Fonction pour jouer le son avec un volume de 20%
 function boxSound() {
-    box.volume = 0.3;  // Définir le volume à 20%
+    box.volume = 0.45;  // Définir le volume à 20%
     box.play();        // Jouer le son
 }
 
