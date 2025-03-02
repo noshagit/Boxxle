@@ -105,8 +105,3 @@ nav a {
 nav a:hover {
     background-color: #555;
 }
-
-#note_score {
-    font-weight: bold; /* Mettre en gras */
-    text-decoration: underline; /* Souligner */
-}

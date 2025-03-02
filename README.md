@@ -11,7 +11,7 @@ Boxxle is a challenging puzzle game where players must push boxes to designated 
 ## Features
 
 - Multiple levels with increasing difficulty.
-- Undo and reset button to help you solve puzzles.
+- Undo, reset and skip button to help you solve puzzles.
 - Simple and intuitive controls.
 - Binding controls
 - Stunning pixel art to enhance the visual appeal of the game some are animated
@@ -27,8 +27,7 @@ Boxxle is a challenging puzzle game where players must push boxes to designated 
 - Undoing the previous move increases the score by 2.
 - Resetting the game increases the score by 5 and adds the current movement counter to the score.
 - The movement counter resets upon winning a game and is added to your score.
-
-**Note: If you push a box that is stuck, the move counter will still increase.**
+- Skip a level increase by 500 your score.
 
 ## Objectives
 
@@ -47,7 +46,7 @@ To install and run the game, follow these steps:
    cd Boxxle
    ```
 3. Run the game with the vscode extension Live Server:
-   - ctrl + shift + p 
+   - ctrl + shift + p
    - Taper Live Server dans la barre de recherche
    - Et cliquer sur : "Live Server: Open with Live Server"
 
