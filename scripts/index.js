@@ -208,11 +208,12 @@ const highlightBoxesOnTarget = () => { // Met en évidence les boîtes sur les p
         const x = parseInt(box.dataset.x); // Récupère les coordonnées x et y
         const y = parseInt(box.dataset.y);
 
-        if (Levels[currentLevel][y][x] === 4) { // Si la case est un emplacement
-            box.style.backgroundColor = "green"; // Met en évidence la boîte
-        } else { // Si la case n'est pas un emplacement
-            box.style.backgroundColor = "brown"; // Ne met pas en évidence la boîte
+        if (Levels[currentLevel][y][x] === 4) { // If the box is on a target
+            box.style.backgroundImage = "url('/images/boxValidate.png')"; // Change to validated box image
+        } else { // If the box is not on a target
+            box.style.backgroundImage = "url('/images/box.jpg')"; // Keep the normal box image
         }
+        
     });
 };
 

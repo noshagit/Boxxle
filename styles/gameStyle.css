@@ -75,27 +75,25 @@ footer {
 
 /* Style pour les cellules mur */
 .wall {
-    background: #444; /* Couleur de fond */
+    background-image: url('/images/wall.jpg');
+    background-size: cover;
 }
 
 /* Style pour les cellules boîte */
 .box {
-    background: brown; /* Couleur de fond */
+    background-size: cover;
 }
 
 /* Style pour les cellules joueur */
 .player {
-    background: blue; /* Couleur de fond */
+    background-image: url('/images/player1.png'); /* Image initiale */
+    background-size: cover;
 }
 
 /* Style pour les cellules cible */
 .target {
-    background: yellow; /* Couleur de fond */
-}
-
-/* Surcharger le style pour les boîtes vertes */
-.box[style*="green"] {
-    background: green !important;  /* Couleur de fond seulement si la box est sur une target */
+    background-image: url('/images/target.png');
+    background-size: cover;
 }
 
 /* ------ MEDIA QUERIES ------ */
