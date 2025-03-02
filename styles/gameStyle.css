@@ -70,9 +70,9 @@ footer {
     align-items: center; /* Centrer les éléments verticalement */
     grid-template-columns: repeat(10, 40px); /* 10 colonnes de 40px chacune */
     grid-template-rows: repeat(11, 40px); /* 11 lignes de 40px chacune */
-    column-gap: 0px; /* Réduit l'écart entre les colonnes */
-    row-gap: 25px; /* Garde l'écart vertical si nécessaire */
-    padding: 25px; /* Ajouter un espace intérieur */
+    column-gap: 0; /* Réduit l'écart entre les colonnes */
+    row-gap: 15px; /* Garde l'écart vertical si nécessaire */
+    padding: 5px; /* Ajouter un espace intérieur */
     border-radius: 10px; /* Ajouter un rayon de bordure */
     margin: 25px; /* Ajouter un espace extérieur */
     margin-bottom: 5px;
@@ -88,8 +88,8 @@ label {
 
 /* Style pour chaque cellule du jeu */
 .cell {
-    width: 40px; /* Largeur de la cellule */
-    height: 40px; /* Hauteur de la cellule */
+    width: 30px; /* Largeur de la cellule */
+    height: 30px; /* Hauteur de la cellule */
     display: flex; /* Utiliser un affichage flex */
     align-items: center; /* Centrer verticalement */
     justify-content: center; /* Centrer horizontalement */
