@@ -413,6 +413,7 @@ const undoLastMove = () => {
         findPlayer(); // Update la position du joeuru
         updateDOM(); // update l'état du jeu
         increaseScore2(); // Incrémente le score
+        walkingSound(); // Joue le son de pas
     }
 };
 
